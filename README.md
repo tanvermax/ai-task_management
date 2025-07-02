@@ -13,6 +13,15 @@ A modern task management app built with **Next.js 15**, **React 19**, **Tailwind
 ✅ Built with latest stable: **Next.js 15**, **React 19**, **TypeScript 5**
 
 ---
+## 🚀 Challenges Faced
+
+# Integrating Gemini in App Router: Next.js 15 uses App Router which required rewriting the traditional pages/api route into app/api/route.ts format.
+
+# Gemini API formatting: The Gemini API expects a specific nested JSON body with contents → parts → text, which took time to debug.
+
+# Tailwind upgrade to v4: Tailwind 4 introduced stricter PostCSS rules, requiring updated configuration.
+
+#  React 19 quirks: Early adoption of React 19 meant adjusting to stricter typing and use client directives.
 
 ## 🤖 AI-Powered Subtasks
 

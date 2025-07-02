@@ -1,6 +1,6 @@
 import connectiontoDatabase from "@/lib/mongooes";
 import Task from "@/models/Task";
-import { NextResponse } from "next/server";
+import { NextRequest,NextResponse } from "next/server";
 
 
 interface TaskData {
@@ -10,7 +10,7 @@ interface TaskData {
     dueDate: string;
 }
 
-export async function POST(req: NextResponse) {
+export async function POST(req: NextRequest) {
     try {
 
 
@@ -33,7 +33,7 @@ export async function POST(req: NextResponse) {
 }
 
 
-export async function GET(req: NextResponse) {
+export async function GET(req: NextRequest) {
     try {
         const tasks = await Task.find();
         return NextResponse.json(
@@ -47,4 +47,42 @@ export async function GET(req: NextResponse) {
             { status: 500 }
         );
     }
+}
+
+
+export async function DELETE(req: NextRequest) {
+
+    try {
+        await connectiontoDatabase();
+        const { id } = await req.json();
+        if (!id) {
+            return NextResponse.json(
+                { success: false, error: "Task ID is required" },
+                { status: 400 }
+            );
+        }
+
+
+        const deltedTask = await Task.findByIdAndDelete(id);
+
+        if (!deltedTask) {
+            return NextResponse.json(
+                { success: false, error: "Task not found" },
+                { status: 404 }
+            );
+        }
+        return NextResponse.json(
+            { success: true, data: deltedTask },
+            { status: 200 }
+        )
+
+
+    } catch (error) {
+        console.error("Error deleting task:", error);
+        return NextResponse.json(
+            { success: false, error: "Failed to delete task" },
+            { status: 500 }
+        );
+    }
+
 }

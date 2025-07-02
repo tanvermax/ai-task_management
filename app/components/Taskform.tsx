@@ -25,6 +25,7 @@ const TaskForm = ({ onClose }: { onClose: () => void }) => {
       [name]: value,
     }));
   };
+  // const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const handleSubmit =async (e: React.FormEvent) => {
     e.preventDefault();
