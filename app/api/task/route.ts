@@ -35,6 +35,7 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
     try {
+        await connectiontoDatabase();
         const tasks = await Task.find();
         return NextResponse.json(
             { success: true, data: tasks },

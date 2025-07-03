@@ -29,7 +29,7 @@ export default function TaskList() {
   useEffect(() => {
     const fetchTask = async () => {
       try {
-        const response = await axios.get('api/task')
+        const response = await axios.get('/api/task')
         if (response.data.success) {
           setTasks(response.data.data);
           // setRefreshTrigger(prev => prev + 1);
