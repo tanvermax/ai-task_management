@@ -18,9 +18,9 @@ console.log("Add A task to show the task");
       <div className="col-span-1">
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-blue-600  text-white px-4 py-2 rounded hover:bg-blue-700"
+          className="bg-blue-600  text-white md:px-4 md:py-2 md:text-base text-[10px] p-1 rounded hover:bg-blue-700"
         >
-          {showForm ? <span className="flex items-center gap-3">Close<IoCloseCircleSharp /></span> : <span className="flex items-center gap-3">Add task<LuCircleFadingPlus /></span>}
+          {showForm ? <span className="flex items-center gap-3">Close<IoCloseCircleSharp /></span> : <span className="flex  items-center gap-3">Add task<LuCircleFadingPlus /></span>}
         </button>
 
         <div className="pt-10">

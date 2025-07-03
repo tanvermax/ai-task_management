@@ -21,7 +21,7 @@ A modern task management app built with **Next.js 15**, **React 19**, **Tailwind
 
 # Tailwind upgrade to v4: Tailwind 4 introduced stricter PostCSS rules, requiring updated configuration.
 
-#  React 19 quirks: Early adoption of React 19 meant adjusting to stricter typing and use client directives.
+# React 19 quirks: Early adoption of React 19 meant adjusting to stricter typing and use client directives.
 
 ## 🤖 AI-Powered Subtasks
 
