@@ -1,6 +1,6 @@
 import connectiontoDatabase from "@/lib/mongooes";
 import Task from "@/models/Task";
-import { NextRequest,NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 
 interface TaskData {
@@ -84,6 +84,45 @@ export async function DELETE(req: NextRequest) {
             { success: false, error: "Failed to delete task" },
             { status: 500 }
         );
+    }
+
+}
+
+export async function PUT(req: NextRequest) {
+    try {
+        await connectiontoDatabase();
+        const updateTask = await req.json();
+
+        if (!updateTask._id) {
+            return NextResponse.json(
+                { success: false, error: "Task ID is required" },
+                { status: 400 }
+            );
+        }
+
+        const result = await Task.findByIdAndUpdate(
+            updateTask._id,
+            updateTask,
+            { new: true }
+        )
+        if (!result) {
+            return NextResponse.json(
+                { success: false, error: "Task not found" },
+                { status: 404 }
+            );
+        }
+        return NextResponse.json(
+            { success: true, data: result },
+            { status: 200 }
+        )
+
+    } catch (error) {
+        console.error("Error updating task:", error);
+        return NextResponse.json(
+            { success: false, error: "Failed to update task" },
+            { status: 500 }
+        );
+
     }
 
 }

@@ -5,6 +5,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { CiBoxList } from "react-icons/ci";
 import { SiOpenai } from "react-icons/si";
+import TaskForm from "./Taskform";
+import EditTaskForm from "./EditTaskForm";
 
 type Task = {
   _id: number;
@@ -15,12 +17,11 @@ type Task = {
 };
 
 
-
 export default function TaskList() {
 
 
   const [taskResult, setTaskResult] = useState<Record<number, string>>({});
-  const [result, setResult] = useState<string | null>(null);
+const [editingTask, setEditingTask] = useState<Task| null>(null)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -108,11 +109,52 @@ export default function TaskList() {
     }
   }
 
+  const handleedit = (task: Task) => {
+    console.log(task);
+    setEditingTask(task);
+  }
+ const handleupdate= async(updateTask:Task)=>{
+
+  try {
+    const response = await fetch('/api/task', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updateTask),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      setTasks(prevTasks =>
+        prevTasks.map(task => 
+          task._id === updateTask._id ? updateTask : task
+        )
+      );
+      setEditingTask(null);
+    } else {
+      setError(data.error || 'Failed to update task');
+    }
+  } catch (err) {
+    setError('An error occurred while updating task');
+    console.error(err);
+  }
+ }
 
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h2 className="text-2xl font-bold mb-4 flex items-center gap-2"><CiBoxList /> Task List</h2>
       <div className="grid gap-4">
+        {
+          editingTask && (
+           <EditTaskForm
+           task={editingTask}
+           onSave={handleupdate}
+           onCancel={() => setEditingTask(null)}
+           />
+          )
+        }
         {tasks.map((task) => (
           <div
             key={task._id}
@@ -152,10 +194,14 @@ export default function TaskList() {
             </div>
             <p className="text-gray-700">{task.description}</p>
             <p className="text-sm text-gray-500 mt-2">Due: {task.dueDate}</p>
-            <button onClick={() => handledelete(task._id)} className="p-2 bg-red-300 rounded-xl hover:bg-red-500 ">Delete</button>
+            <div className=" flex gap-2">
+              <button onClick={() => handledelete(task._id)} className="p-2 bg-red-300 rounded-xl hover:bg-red-500 ">Delete</button>
+              <button onClick={() => handleedit(task)} className="p-2 bg-green-300 rounded-xl text-black hover:bg-green-500 ">Edit</button>
+            </div>
           </div>
         ))}
       </div>
+     
     </div>
   );
 }
