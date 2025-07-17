@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
     try {
         await connectiontoDatabase();
-        const tasks = await Task.find();
+        const tasks = await Task.find().sort({dueDate:-1});
         return NextResponse.json(
             { success: true, data: tasks },
             { status: 200 }
