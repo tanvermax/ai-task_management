@@ -21,7 +21,7 @@ export default function TaskList() {
 
 
   const [taskResult, setTaskResult] = useState<Record<number, string>>({});
-const [editingTask, setEditingTask] = useState<Task| null>(null)
+  const [editingTask, setEditingTask] = useState<Task | null>(null)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -113,34 +113,35 @@ const [editingTask, setEditingTask] = useState<Task| null>(null)
     console.log(task);
     setEditingTask(task);
   }
- const handleupdate= async(updateTask:Task)=>{
+  const handleupdate = async (updateTask: Task) => {
 
-  try {
-    const response = await fetch('/api/task', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updateTask),
-    });
+    try {
+      const response = await fetch('/api/task', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updateTask),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (data.success) {
-      setTasks(prevTasks =>
-        prevTasks.map(task => 
-          task._id === updateTask._id ? updateTask : task
-        )
-      );
-      setEditingTask(null);
-    } else {
-      setError(data.error || 'Failed to update task');
+      if (data.success) {
+        setTasks(prevTasks =>
+          prevTasks.map(task =>
+            task._id === updateTask._id ? updateTask : task
+          )
+        );
+        setEditingTask(null);
+      } else {
+        setError(data.error || 'Failed to update task');
+      }
+    } catch (err) {
+      setError('An error occurred while updating task');
+      console.error(err);
     }
-  } catch (err) {
-    setError('An error occurred while updating task');
-    console.error(err);
   }
- }
+ 
 
   return (
     <div className="md:max-w-4xl  md:mx-auto md:p-6 p-2">
@@ -149,11 +150,11 @@ const [editingTask, setEditingTask] = useState<Task| null>(null)
 
         {
           editingTask && (
-           <EditTaskForm
-           task={editingTask}
-           onSave={handleupdate}
-           onCancel={() => setEditingTask(null)}
-           />
+            <EditTaskForm
+              task={editingTask}
+              onSave={handleupdate}
+              onCancel={() => setEditingTask(null)}
+            />
           )
         }
         {tasks.map((task) => (
@@ -205,7 +206,7 @@ const [editingTask, setEditingTask] = useState<Task| null>(null)
           </div>
         ))}
       </div>
-     
+
     </div>
   );
 }

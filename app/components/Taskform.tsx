@@ -47,6 +47,9 @@ const TaskForm = ({ onClose }: { onClose: () => void }) => {
     
     const response = await axios.post("/api/task",formData);
     console.log('Task created:',response.data);
+    if (response.data) {
+      window.location.reload(); 
+    }
   } catch (error) {
     console.log(error);
   }
